@@ -1,0 +1,30 @@
+{
+ "version": 1,
+ "certificate": {
+  "certificate": {
+   "aud": "mediavault-addon-author",
+   "version": 1,
+   "serial": 17,
+   "author_id": "gh-168516058",
+   "author": "kzerghost",
+   "namespace": "kzerghost",
+   "public_key": "sr6b0m+cIe+aDlL1G1QtDBulsCCfpNt3vQ8nmjlRwzc=",
+   "issued_at": 1792721926,
+   "expires_at": 1824257926,
+   "content_key": "ae/ndCJqpm3+zHl9FhisatkeyLXKPujliaiJ1DGzmQI=",
+   "content_key_version": 1,
+   "installation_key": "E19gzIsjFZThE9moc5QiTzkhLEZpX3/TUx/kjaosd1w="
+  },
+  "signature": "Je0CN9TS1am1Ar7dmzWPqfwprpUFSSh2mKeJER6QLEaP3Wlc8EhLuhAPKrfe0vilsQCJtOpHJIZtLR7zubKHAQ=="
+ },
+ "payload": {
+  "plugin_id": "kzerghost.dian-browser-worker-pilot",
+  "version": "0.4.4",
+  "files": {
+   "README.md": "89e693517db701b5c6dcbbd53fe5bb50666e43ec31a17249f7b3956600bbd2b4",
+   "encrypted.json": "67b27a60a9ed41f87dbef9c12bf71ddce23a59673511ef6b410d0295eadaae65",
+   "manifest.json": "c5e798b47a666d2f1ba2cc978218e425bd2b9a46c74d315686eca79ed65e45c2"
+  }
+ },
+ "signature": "d1ZjERWX1MxU6ssW+xg7tokIzfD4g6Xd4buL5QfDoQ6DMtyFTXj0qXjmEakoih0qIEczIGeD4lIBDVl+mR9XAw=="
+}

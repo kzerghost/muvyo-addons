@@ -1,0 +1,141 @@
+{
+  "api": 1,
+  "min_mv_version": "3.14.0",
+  "id": "kzerghost.dian-browser-worker-pilot",
+  "name": "癫影每日大包解锁",
+  "version": "0.4.4",
+  "author": "kzerghost",
+  "description": "每日解锁最多五包，积分消耗后是否继续可选，失败使用Muvyo官方重试。",
+  "entry": "main.js",
+  "permissions": {
+    "domains": [
+      "m.dian115.com",
+      "madow.tv"
+    ],
+    "service": {
+      "label": "执行端地址",
+      "help": "需要先部署本插件配套的 dian-bridge 浏览器执行端。请打开“执行端部署说明”链接，按仓库说明部署后填写 http://NAS地址:8788/api/v1；端口按实际部署修改。已部署 dian-bridge 0.4.3 的用户可继续使用原地址和访问密码。"
+    },
+    "muvyo": [
+      "telegram.bot"
+    ],
+    "telegram_bots": [
+      "madowchat_bot"
+    ]
+  },
+  "config": [
+    {
+      "key": "website",
+      "label": "邮箱登录入口",
+      "type": "select",
+      "required": true,
+      "default": "https://m.dian115.com",
+      "options": [
+        {
+          "value": "https://m.dian115.com",
+          "label": "m.dian115.com"
+        },
+        {
+          "value": "https://madow.tv",
+          "label": "madow.tv"
+        }
+      ],
+      "help": "邮箱登录使用此入口；Telegram登录使用机器人当前的m.dian115.com入口。两入口核对同一账号及每日次数。"
+    },
+    {
+      "key": "use_telegram",
+      "label": "使用Telegram登录",
+      "type": "bool",
+      "default": "false",
+      "help": "开启后，失效会话通过Muvyo已登录的Telegram获取登录链接，当前使用m.dian115.com；有效会话直接复用。"
+    },
+    {
+      "key": "email",
+      "label": "网站登录邮箱",
+      "type": "secret",
+      "required": false,
+      "help": "关闭Telegram登录时填写。"
+    },
+    {
+      "key": "password",
+      "label": "网站登录密码",
+      "type": "secret",
+      "required": false,
+      "help": "关闭Telegram登录时填写网站密码。"
+    },
+    {
+      "key": "worker_key",
+      "label": "执行端访问密码",
+      "type": "secret",
+      "required": true,
+      "help": "与部署配置中的访问密码一致。长度24–128位，仅含字母、数字、下划线或短横线，以字母或数字开头；建议使用随机32位密码。"
+    },
+    {
+      "key": "continue_on_spend",
+      "label": "积分消耗后继续解锁",
+      "type": "bool",
+      "default": "false",
+      "help": "关闭：发现网站扣分或余额减少后，停止当天剩余解锁。开启：仍继续当天剩余额度，并在结果通知中说明积分变化。新设置从下一次运行生效；每日仍最多五包。"
+    }
+  ],
+  "settings": {
+    "description": "先按“执行端部署说明”部署配套 dian-bridge，再填写执行端地址和访问密码。每天一个解锁任务，单次时限建议300秒；失败由Muvyo每隔1小时最多重试3次。",
+    "links": [
+      {
+        "title": "执行端部署说明",
+        "url": "https://github.com/kzerghost/muvyo-addons/blob/main/docs/DEPLOYMENT.md"
+      },
+      {
+        "title": "插件使用说明",
+        "url": "https://github.com/kzerghost/muvyo-addons/blob/main/docs/DIAN.md"
+      },
+      {
+        "title": "m.dian115.com",
+        "url": "https://m.dian115.com/"
+      },
+      {
+        "title": "madow.tv",
+        "url": "https://madow.tv/"
+      }
+    ],
+    "sections": [
+      {
+        "title": "执行端",
+        "fields": [
+          "worker_key"
+        ]
+      },
+      {
+        "title": "网站与登录",
+        "fields": [
+          "website",
+          "use_telegram",
+          "email",
+          "password"
+        ]
+      },
+      {
+        "title": "解锁设置",
+        "fields": [
+          "continue_on_spend"
+        ]
+      }
+    ]
+  },
+  "capabilities": {
+    "account": {
+      "title": "解锁状态"
+    },
+    "tasks": [
+      {
+        "id": "daily_unlock",
+        "title": "每日解锁五包（与签到、转盘错开）",
+        "description": "请与签到、转盘错开整个执行时段。建议单次时限300秒。失败由Muvyo每隔1小时最多重试3次，每次先查历史，只补当天剩余，最多五包。积分变化会写入结果通知。",
+        "interval_minutes": 1440,
+        "retries": 3,
+        "kind": "checkin"
+      }
+    ]
+  },
+  "release_notes": "首个仓库公测版本。补充执行端地址的获取与填写说明，提供配套dian-bridge部署和使用文档；已有0.4.3执行端可继续使用。采用加密签名插件和签名仓库索引分发。保持每日最多五包、积分消耗开关及官方失败重试逻辑。当前验证环境为Muvyo 3.14.0。"
+}
