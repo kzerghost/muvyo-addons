@@ -1,0 +1,59 @@
+# kzerghost 的 Muvyo 插件
+
+Muvyo 第三方插件仓库，由 kzerghost 独立维护。当前提供“癫影每日大包解锁”公测版。
+
+## 安装插件
+
+在 Muvyo「第三方插件 → 插件仓库」添加：
+
+```text
+https://github.com/kzerghost/muvyo-addons
+```
+
+刷新仓库后安装插件，并在安装窗口确认所需域名、执行端和 Telegram 机器人权限。
+
+| 插件 | 作用 | 需要准备 |
+| --- | --- | --- |
+| 癫影每日大包解锁 | 每天自动解锁最多五个大包，显示当日进度，并使用 Muvyo 通知发送结果 | 自己的癫影账号及站点认可的解锁资格，配套 dian-bridge 执行端；选择 Telegram 登录时，还需在 Muvyo 登录 Telegram |
+
+- [插件设置与使用说明](docs/DIAN.md)
+- [dian-bridge 的作用、Compose 下载与部署步骤](docs/DEPLOYMENT.md)
+- [版本记录](CHANGELOG.md)
+
+## dian-bridge 是什么
+
+**dian-bridge 是本插件配套、部署在你自己 NAS 或服务器上的浏览器执行端。** 它负责启动浏览器，使用你的账号登录网站，查询解锁历史并完成每日任务；同时保存浏览器会话和防重复提交记录。浏览器按需启动，任务结束后清理并回收空闲内存。
+
+它由同一个 Compose 项目中的两个容器组成：
+
+| 容器 | 作用 |
+| --- | --- |
+| worker | 接收插件的加密任务请求，管理任务进度、每日额度与防重复记录 |
+| browser | 为任务提供按需启动的浏览器，保留网站登录会话，任务结束后清理浏览器进程 |
+
+插件连接 worker 提供的地址，例如 `http://NAS地址:8788/api/v1`。这套服务运行在你自己的设备上，网站登录信息和会话不经过作者的服务器。
+
+### 下载部署文件
+
+**[下载配套 compose.yaml](https://raw.githubusercontent.com/kzerghost/muvyo-addons/main/deployment/dian-bridge-0.4.3/compose.yaml)** · [查看文件](deployment/dian-bridge-0.4.3/compose.yaml) · [按步骤部署](docs/DEPLOYMENT.md)
+
+下载后修改其中唯一的 `DIAN_ACCESS_PASSWORD`，再用 NAS 的容器管理器或 Docker Compose 创建项目。文件内已包含运行所需的执行端程序，无需另行下载源码目录。
+
+当前插件版本为 **0.4.4**，配套执行端为 **dian-bridge 0.4.3，协议5**。已经部署该执行端的用户，可以继续使用原地址和访问密码，直接更新插件。
+
+## 使用范围与验证情况
+
+任务使用本人账号和站点授予的资格，通过正常页面完成解锁；每天最多五包，不转存。遇到额外验证、身份不一致或无法确认的提交结果时停止。失败重试由 Muvyo 调度，每次先核对旧任务和网站历史。
+
+本版面向 **Muvyo 3.14.0 及以上版本**。已在 3.14.0 验证完整五包定时、结果通知和任务后空闲内存回落；0.4.4 沿用已验证的解锁逻辑与 0.4.3 执行端，主要补充发布方式和设置说明。连续多日、全新设备安装及真实故障续跑仍在收集公测结果。
+
+## 仓库内容
+
+- `index.json`、`index.json.sig`：插件仓库索引与索引签名。
+- `plugins/`：加密并签名后的插件、权限清单和说明。
+- `deployment/`：可直接下载的配套执行端 Compose 文件。
+- `docs/`：安装、使用、升级与恢复说明。
+
+发布目录不包含网站账号、访问密码、登录会话、作者私钥或明文插件入口代码。配套执行端程序随 Compose 分发。
+
+仓库组织参考 [fnyys 的 Muvyo 插件仓库](https://github.com/fnyys6694-arch/muvyo-addon)，发布格式依据 [Muvyo 官方开发指南](https://github.com/thsrite/muvyo-addon-guide)。

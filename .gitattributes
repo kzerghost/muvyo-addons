@@ -1,0 +1,6 @@
+# Signed files must retain their exact bytes across Windows and Linux checkouts.
+* text=auto eol=lf
+/index.json -text
+/index.json.sig -text
+/plugins/** -text
+/deployment/**/compose.yaml -text
