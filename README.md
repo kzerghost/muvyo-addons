@@ -37,7 +37,9 @@ https://github.com/kzerghost/muvyo-addons
 
 **[下载配套 compose.yaml](https://raw.githubusercontent.com/kzerghost/muvyo-addons/main/deployment/dian-bridge-0.4.3/compose.yaml)** · [查看文件](deployment/dian-bridge-0.4.3/compose.yaml) · [按步骤部署](docs/DEPLOYMENT.md)
 
-下载后修改其中唯一的 `DIAN_ACCESS_PASSWORD`，再用 NAS 的容器管理器或 Docker Compose 创建项目。文件内已包含运行所需的执行端程序，无需另行下载源码目录。
+下载后先创建 `profiles`、`state` 两个专用数据目录，在文件开头填写它们的绝对路径和 `DIAN_ACCESS_PASSWORD`，再用 NAS 的容器管理器或 Docker Compose 创建项目。默认路径是 `/volume1/docker/dian-bridge/data/profiles` 和 `/volume1/docker/dian-bridge/data/state`，可以改到自己的持久目录。文件内已包含运行所需的执行端程序，无需另行下载源码目录。
+
+登录会话和任务记录保存在这两个可见目录中；删除项目或容器会保留目录，持久数据不会自动清空。备份、卸载和旧命名卷部署的处理见[数据管理说明](docs/DEPLOYMENT.md#登录资料和记录存在哪里)。
 
 当前插件版本为 **0.4.4**，配套执行端为 **dian-bridge 0.4.3，协议5**。已经部署该执行端的用户，可以继续使用原地址和访问密码，直接更新插件。
 
