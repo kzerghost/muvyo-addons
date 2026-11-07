@@ -1,5 +1,10 @@
 # 更新记录
 
+## dian-bridge 0.4.4 · 2026-11-07
+
+- 适配癫影改版后的大包列表，修复打开详情前的 `resource_navigation_failed`，同时兼容旧版列表。
+- 保留协议 5 和现有持久数据格式。已安装插件 0.4.4 的用户按[升级说明](docs/DEPLOYMENT.md#升级与恢复)更新执行端 Compose 即可。
+
 ## dian-bridge 0.4.3 · 部署文件 r1 · 2026-10-31
 
 - 默认 `compose.yaml` 改为用户指定的宿主机目录挂载，文件开头集中填写 `profiles`、`state` 的绝对路径；不再为这两类数据创建命名卷。
