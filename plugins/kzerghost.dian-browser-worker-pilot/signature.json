@@ -19,12 +19,12 @@
  },
  "payload": {
   "plugin_id": "kzerghost.dian-browser-worker-pilot",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "files": {
-   "README.md": "89e693517db701b5c6dcbbd53fe5bb50666e43ec31a17249f7b3956600bbd2b4",
-   "encrypted.json": "67b27a60a9ed41f87dbef9c12bf71ddce23a59673511ef6b410d0295eadaae65",
-   "manifest.json": "c5e798b47a666d2f1ba2cc978218e425bd2b9a46c74d315686eca79ed65e45c2"
+   "README.md": "c43296ce91f147edaebf7f51df3ee60d877c98a3637185325445ccf79d7839a0",
+   "encrypted.json": "6d7977e55ac05d7add4cdfe8ad410905f4c7858a08fc3d7a346fbc31ed15e184",
+   "manifest.json": "282c6252c31892c77997ac33791af6216bbd594d6f7477a8017e393f0e6484f4"
   }
  },
- "signature": "d1ZjERWX1MxU6ssW+xg7tokIzfD4g6Xd4buL5QfDoQ6DMtyFTXj0qXjmEakoih0qIEczIGeD4lIBDVl+mR9XAw=="
+ "signature": "VigPcu3hpkpp1NOKzVmUHW2oeJJg8hJgB0Jrx0VU4DQqabTCY4qKbdMfYB/DAJ6VLwUlUYQfR4d0nqkTBLInBA=="
 }

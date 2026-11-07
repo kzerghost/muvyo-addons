@@ -12,20 +12,20 @@ Muvyo 插件负责定时触发、交接登录信息、显示进度和返回通�
 
 | 项目 | 当前配套版本或要求 |
 | --- | --- |
-| Muvyo 插件 | 癫影每日大包解锁 0.4.4 |
+| Muvyo 插件 | 癫影每日大包解锁 0.4.5 |
 | Muvyo | 3.14.0 或以上 |
-| dian-bridge | 推荐 0.4.4，协议 5 |
+| dian-bridge | 最低 0.4.4，推荐 0.4.5，协议 5 |
 | 默认部署文件 | 目录挂载版 r1，数据保存在自己填写的两个宿主机目录 |
 | 运行环境 | 支持 Compose 的 Docker，或 NAS 的容器项目管理器；可以拉取文件中的 Node 与 Selenium Chromium 镜像 |
 | 网络 | Muvyo 能访问执行端的映射端口；执行端能访问所选网站 |
 
-执行端 0.4.4 修复了癫影网站新版列表打开详情失败的问题。已经部署 0.4.3 的用户可按[原项目升级步骤](#升级与恢复)保留原地址、访问密码及存储配置。插件 0.4.4 检查的是协议 5，可以直接连接新执行端。插件帮助中的旧版本号源自首发时的部署说明。
+执行端 0.4.4 修复了新版大包列表的详情跳转。0.4.5 另外在 worker 容器日志记录每轮结果。已部署 0.4.4 的用户可先更新插件并继续运行，升级执行端后即可使用 Docker 任务日志。执行端低于 0.4.4 或协议不兼容时，插件会在提交新任务前提示升级。
 
 ## 1. 下载 Compose 文件
 
-**[下载 compose.yaml](https://raw.githubusercontent.com/kzerghost/muvyo-addons/main/deployment/dian-bridge-0.4.4/compose.yaml)**
+**[下载 compose.yaml](https://raw.githubusercontent.com/kzerghost/muvyo-addons/main/deployment/dian-bridge-0.4.5/compose.yaml)**
 
-也可以[打开仓库中的文件](../deployment/dian-bridge-0.4.4/compose.yaml)，点击 Raw 后保存。请保存为 `compose.yaml`，不要把下载到的网页 HTML 当作 YAML 导入。
+也可以[打开仓库中的文件](../deployment/dian-bridge-0.4.5/compose.yaml)，点击 Raw 后保存。请保存为 `compose.yaml`，不要把下载到的网页 HTML 当作 YAML 导入。
 
 Compose 已包含运行所需的程序，会创建 `dian-bridge` 项目及 worker、browser 两个容器。无需创建额外源码目录、config.json 或初始化容器。
 
@@ -126,7 +126,7 @@ docker compose -f compose.yaml ps
 
 旧版使用 Docker 命名卷，默认名称为 `dian-bridge_profiles`、`dian-bridge_state`，部分早期配置使用过自定义名称。删除旧容器通常仍会保留这些卷。
 
-使用命名卷的用户可下载 [0.4.4 命名卷版](../deployment/dian-bridge-0.4.4/compose.named-volumes.yaml)，将原项目名、访问密码和两个卷的映射带入新文件。使用前请确认解析出的卷名与原部署一致。
+使用命名卷的用户可下载 [0.4.5 命名卷版](../deployment/dian-bridge-0.4.5/compose.named-volumes.yaml)，将原项目名、访问密码和两个卷的映射带入新文件。使用前请确认解析出的卷名与原部署一致。
 
 **切换到默认目录挂载文件不会复制旧卷内容。** 需要保留登录和台账时，应停机备份并迁移两个卷的完整内容及所有权后再切换；完成核对前保留旧卷。打算彻底全新部署时，也要先确认旧任务结果，再单独清理属于旧项目且没有任何容器引用的卷。不要执行全局卷清理。
 
@@ -138,17 +138,19 @@ worker 根文件系统只读；browser 需要可写运行环境。两个服务�
 
 ## 升级与恢复
 
-### 从 dian-bridge 0.4.3 升级到 0.4.4
+### 将已有执行端升级到 0.4.5
 
 1. 等待当前任务结束，暂时关闭插件的每日自动运行，并保留一份原 Compose。
-2. 下载与当前存储方式相同的 0.4.4 Compose。把原项目名、`DIAN_ACCESS_PASSWORD`、端口映射，以及原 `profiles` 和 `state` 路径或卷映射填入新文件。
+2. 下载与当前存储方式相同的 0.4.5 Compose。把原项目名、`DIAN_ACCESS_PASSWORD`、端口映射，以及原 `profiles` 和 `state` 路径或卷映射填入新文件。
 3. 替换原项目的 Compose 并重建容器。群晖可在 Container Manager 中更新并重建原项目。命令行可在原项目目录执行 `docker compose -f compose.yaml up -d`。普通重启仍会运行旧容器内的程序。
-4. 检查两个服务均健康。打开 `http://NAS地址:8788/health`，按实际端口查看 `version` 为 `0.4.4`、`protocol` 为 `5`。随后恢复每日自动运行，查看下一次运行结果。已装的插件 0.4.4 可以继续使用，原登录会话、任务和防重复记录会通过持久存储复用。
+4. 检查两个服务均健康。打开 `http://NAS地址:8788/health`，按实际端口查看 `version` 为 `0.4.5`、`protocol` 为 `5`。在 Muvyo 刷新仓库、更新插件并恢复每日自动运行。原登录会话、任务和防重复记录会通过持久存储复用。
 
 ### 恢复与故障记录
 
-执行端如需回退，可使用备份的原 Compose 重建，保留同一份数据和访问密码。[旧版部署文件](../deployment/dian-bridge-0.4.3/)仍可查阅。0.4.3 遇到新版大包列表时仍会出现详情导航失败。
+执行端如需回退，可使用备份的原 Compose 重建，保留同一份数据和访问密码。插件 0.4.5 仍可连接 [0.4.4 执行端](../deployment/dian-bridge-0.4.4/)。
 
-遇到任务故障请保留原任务记录。宿主重试时会先查旧任务与网站历史。插件版本恢复与执行端独立，普通仓库安装不支持直接降级插件。
+执行端 0.4.5 的每轮结果会写入 worker 容器日志。可在 Container Manager 里打开 `dian-bridge-worker-1` 的日志，或在原项目目录执行 `docker compose -f compose.yaml logs --tail=50 worker`，按插件显示的任务编号筛选。日志只记录诊断字段，包括错误码、阶段、可用的 HTTP 状态、提交状态和计数。连接或认证失败时，优先看 Muvyo 的任务结果，因为请求可能尚未建立 worker 任务。
+
+宿主重试时会先查旧任务与网站历史，请保留 `state`。插件版本恢复与执行端独立，普通仓库安装不支持直接降级插件。
 
 当前没有承诺一键自动回退。遇到问题可在仓库提交 Issue，并附版本、脱敏错误和发生时间。

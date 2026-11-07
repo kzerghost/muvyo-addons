@@ -1,16 +1,16 @@
 {
-  "name": "kzerghost 的 Muvyo 插件",
-  "sequence": 1,
-  "plugins": [
-    {
-      "id": "kzerghost.dian-browser-worker-pilot",
-      "name": "癫影每日大包解锁",
-      "version": "0.4.4",
-      "description": "每日解锁最多五包，积分消耗后是否继续可选，失败使用Muvyo官方重试。",
-      "author": "kzerghost",
-      "path": "plugins/kzerghost.dian-browser-worker-pilot",
-      "api": 1
-    }
-  ],
-  "public_key": "jN1NVbtJIwnClCBXdJyzlvV6VwP2pnUZqVLxfrRct50="
+ "name": "kzerghost 的 Muvyo 插件",
+ "sequence": 2,
+ "plugins": [
+  {
+   "id": "kzerghost.dian-browser-worker-pilot",
+   "name": "癫影每日大包解锁",
+   "version": "0.4.5",
+   "description": "每日解锁最多五包，积分消耗后是否继续可选，失败使用Muvyo官方重试。",
+   "author": "kzerghost",
+   "path": "plugins/kzerghost.dian-browser-worker-pilot",
+   "api": 1
+  }
+ ],
+ "public_key": "jN1NVbtJIwnClCBXdJyzlvV6VwP2pnUZqVLxfrRct50="
 }

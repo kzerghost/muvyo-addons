@@ -7,14 +7,14 @@
 **dian-bridge是部署在你自己NAS或服务器上的配套浏览器执行端。** 它负责按需启动浏览器、网站登录、查询历史、执行解锁，以及保存会话和防重复提交记录。Muvyo插件负责定时触发、配置与结果显示。
 
 - [执行端部署说明](https://github.com/kzerghost/muvyo-addons/blob/main/docs/DEPLOYMENT.md)
-- [下载compose.yaml](https://raw.githubusercontent.com/kzerghost/muvyo-addons/main/deployment/dian-bridge-0.4.3/compose.yaml)
+- [下载 Compose](https://raw.githubusercontent.com/kzerghost/muvyo-addons/main/deployment/dian-bridge-0.4.5/compose.yaml)
 - [完整插件使用说明](https://github.com/kzerghost/muvyo-addons/blob/main/docs/DIAN.md)
 
 下载Compose，修改开头的`DIAN_ACCESS_PASSWORD`后，在自己的NAS容器管理器或Docker Compose中创建dian-bridge项目。它包含worker与browser两个容器，无需另行下载源码目录。
 
 插件“执行端地址”填写`http://NAS地址:8788/api/v1`，访问密码填写Compose中设置的同一个值；地址和映射端口按实际部署填写。
 
-**当前插件0.4.4配套dian-bridge 0.4.3（协议5）。已部署该执行端的用户，可继续使用原地址、密码和两个数据卷。**
+**插件 0.4.5 需要协议 5 和 dian-bridge 0.4.4 或以上。推荐执行端 0.4.5，可在 worker 容器日志查询任务结果。**
 
 ## 设置与使用
 
@@ -27,8 +27,8 @@
 
 失败由Muvyo每隔1小时最多重试3次，每次先核对原任务与网站历史，已成功的不重复提交。额外验证、身份不一致、结果不明时停止；遵守网站等待要求。
 
-## 版本和验证范围
+## 查看任务故障
 
-最低Muvyo版本3.14.0。插件入口沿用已验证的0.4.3逻辑；本次补充仓库发布和设置说明，不更换0.4.3执行端。已在Muvyo 3.14.0验证完整新日五包、通知和任务后内存回落；连续多日、新设备与真实故障续跑继续公测。
+任务结果显示错误码、失败阶段和可用的 HTTP 状态。刷新「解锁状态」可查看执行端版本及失败诊断，并把最近的失败补记到插件日志。执行端 0.4.5 的 worker 容器日志使用相同的任务编号。
 
-升级时保留原连接、登录和定时设置。执行端的profiles保存登录会话，state保存防重复记录；保留原密码、项目名和两个卷。普通仓库安装不直接降级，恢复方法随对应更高版本修正版说明提供。
+最低 Muvyo 版本为 3.14.0。升级时保留原连接、登录和定时设置。更新执行端时沿用原项目名、访问密码以及 `profiles` 和 `state` 的目录或卷。
